@@ -22,4 +22,34 @@ data("anscombe")
 with(anscombe, plot(x1, y1))
 abline(lm(y1~x1, data = anscombe))
 ```
+```{r data_import, echo=TRUE}
+library(readr)
+df <- read_csv("analgesic.csv")
+```
+```{r data_summary, echo=TRUE}
+dim.data.frame(df)
+colnames(df)
+head(df)
+tail(df)
+summary(df)
+```
+```{r data_tidy, echo=TRUE}
+library(tidyr)
+library(dplyr)
+library(forcats)
+
+altered_df <- df %>%
+  # Tidy up df data from wide to long format
+  gather(key= Measurements, value= results, Measurement_1:Measurement_3) %>%
+  # Set group factor
+  group_by(Measurements) %>%
+  # Summarise the data by calculating the mean across the measurements on each individual
+  summarise (mean= mean(results)) %>%
+  # Ungroup
+  ungroup()
+# Print out the final data frame
+altered_df
+
+
+```
 

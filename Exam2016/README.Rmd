@@ -1,0 +1,108 @@
+---
+title: "exam2016"
+output: github_document
+---
+## null hypothesis
+*mean oral temperature does not have an effect on heart rate on male and females
+## alternative hypothesis
+*mean oral temperature has an effect on heart rate on male and females
+## type of data being analysed
+*
+```{r}
+
+```
+
+
+```{r question1, echo=TRUE}
+G <- read.csv("file:///C:/Users/Wits-User/Desktop/Exam2016/question1.csv")
+library(tidyr)
+# Tidy the data
+head (G)
+G <- xtabs(~body_temperature+male + female, data= G)
+barplot(G, ylab = 'body_temperature', xlab = 'male and female', main = 'body temperature in male and females', col= c("pink","blue","red"))
+
+```
+
+## GitHub Documents
+
+This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+
+## Including Code
+
+You can include R code in the document as follows:
+
+```{r question 2, echo=TRUE}
+m <- read.csv("file:///C:/Users/Wits-User/Desktop/Exam2016/question2.csv")
+# tidy data
+m <- xtabs(~handedness + first_stumble, data = m)
+head(m)
+# explore the data
+dim(m)
+names(m)
+head(m)
+tail(m)
+summary(m)
+
+#plot data
+barplot(m, beside = TRUE, ylab= "intoxication", xlab = "balance", main = "the effect of drinking on handeness and ataxic walking", col= c("pink", "blue")
+
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+## null hypothesis
+
+* running time does not affect the number of calories consumed
+## alternative hypothesis
+
+* running time has an effect on the number of calories consumed
+## type of data being analysed
+* numerical data : continous data
+## statistical test
+* linear regression
+*the generalized linear model because the diagnostics I ran were not normally distributed.
+## assumption
+* there is a trend bewteen x and y
+* the residuals are normally distributed and Homoskedastcity
+```{r question 3, echo=TRUE}
+x <- read.csv("file:///C:/Users/Wits-User/Desktop/Exam2016/question3.csv")
+# TIDY DATA
+time= x$time
+calories= x$calories
+head(cbind(time, calories))
+# scatter plot
+plot(time, calories, xlab = "time", ylab = "calories")
+abline( lm(d$calories~d$time, data = d), col="blue", lwd=2)
+# linear regression
+ x1 <-lm(x$time~x$calories, data= x)
+ summary(x1)
+ #diagnostic plot 1: Homoskedasticity
+ plot( x = x1$fitted.values, y = x1$residuals, main = "Homoskedasticity", col="green")
+ abline(h=0)
+ #diagnostic plot 2: gaussian residual distribution
+ qqnorm(x1$residuals)
+ qqline(x1$residuals)
+ # variables have non-gaussian error of distribution
+ glm(x$calories~x$time, data= x)
+ summary(x1)
+
+```
+## statistical results
+*p = 7.95e-12 which is less than 0.05 therefore reject the null hypothesis.
+* running has an effect on the consumption of calories
+```{r}
+
+
+
+
+#plot the data
+
+barplot(x1, beside = TRUE, ylab = 'intoxication', xlab= 'presentation', main = 'effect of intoxication on handedness and ataxia', col= c("pink", "turquoise"))
+
+legend('top', c("handedness", "ataxia"), fill = c("pink", "turquoise"))
+
+```
+
