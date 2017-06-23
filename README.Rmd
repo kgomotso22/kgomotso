@@ -45,15 +45,18 @@ library(forcats)
 
 altered_df <- df %>%
   # Tidy up df data from wide to long format
-  gather(key= Measurements, value= results, Measurement_1:Measurement_3) %>%
+  gather(key = Measurements, 
+         value = results, 
+         Measurement_1:Measurement_3) %>%
   # Set group factor
   group_by(Measurements) %>%
   # Summarise the data by calculating the mean across the measurements on each individual
-  summarise (mean= mean(results)) %>%
+  summarise (mean = mean(results)) %>%
   # Ungroup
   ungroup()
-# Print out the final data frame
-altered_df
+  #Print out the final data frame
+  altered_df
+
 ```
 ## Assignment 5
 #chunk 1
@@ -126,7 +129,6 @@ DF= 2
 ```
 #chunk 3 
 ```{r Nausea, echo=TRUE}
-
 ## Null Hypotheses
 #H0: Receiving a 5HT3-receptor blocker does not reduce nausea
 
@@ -161,7 +163,6 @@ wilcox.test(nausea$Nausea_before,nausea$Nausea_after, paired = TRUE)
 ## Assignment 6
 #chunk 1
 ```{r Housing Prices, echo=TRUE}
-
 ## Null Hypotheses
 #H0: The Housing Prices does not depend on the interest rates
 
