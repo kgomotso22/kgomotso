@@ -4,6 +4,9 @@ Hello Octocat
 I love Octocat. she's the coolest cat in town ![error
 404](https://dl.dropboxusercontent.com/u/11805474/painblogr/biostats/assignments/octocat.png)
 
+Assignment 2
+------------
+
     data("anscombe")
     dim.data.frame(anscombe)
 
@@ -50,7 +53,13 @@ I love Octocat. she's the coolest cat in town ![error
     ##  3rd Qu.: 8.570   3rd Qu.:8.950   3rd Qu.: 7.98   3rd Qu.: 8.190  
     ##  Max.   :10.840   Max.   :9.260   Max.   :12.74   Max.   :12.500
 
+Assignment 3
+------------
+
 <img src="./figures/xy_plot-1.svg" style="display: block; margin: auto;" />
+
+Assignment 4
+------------
 
     library(readr)
     df <- read_csv("analgesic.csv")
@@ -132,15 +141,17 @@ I love Octocat. she's the coolest cat in town ![error
 
     altered_df <- df %>%
       # Tidy up df data from wide to long format
-      gather(key= Measurements, value= results, Measurement_1:Measurement_3) %>%
+      gather(key = Measurements, 
+             value = results, 
+             Measurement_1:Measurement_3) %>%
       # Set group factor
       group_by(Measurements) %>%
       # Summarise the data by calculating the mean across the measurements on each individual
-      summarise (mean= mean(results)) %>%
+      summarise (mean = mean(results)) %>%
       # Ungroup
       ungroup()
-    # Print out the final data frame
-    altered_df
+      #Print out the final data frame
+      altered_df
 
     ## # A tibble: 3 × 2
     ##    Measurements   mean
@@ -148,3 +159,275 @@ I love Octocat. she's the coolest cat in town ![error
     ## 1 Measurement_1 20.125
     ## 2 Measurement_2 20.700
     ## 3 Measurement_3 20.525
+
+Assignment 5
+------------
+
+chunk 1
+=======
+
+    ## Null Hypotheses
+    # H0: The weights of the chicks is not dependent on the feed
+
+    ## Alternative hypotheses
+    #H1: The weights of the chicks depends on the feed
+
+    #read data
+    chicken <- read_csv("chick-weights.csv")
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   weight = col_integer(),
+    ##   feed = col_character()
+    ## )
+
+    # plot boxplot
+    boxplot(weight~feed, data= chicken)
+
+![](README_files/figure-markdown_strict/Chick%20weights-1.png)
+
+    # Statistical tests 
+    chickstat <-aov(weight~feed, data = chicken)
+    summary(chickstat)
+
+    ##             Df Sum Sq Mean Sq F value   Pr(>F)    
+    ## feed         5 231129   46226   15.37 5.94e-10 ***
+    ## Residuals   65 195556    3009                     
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    ## Test statistic and underlying assumptions
+    #compares samples of 3 or more groups
+
+    # Degrees of freedom
+    DF= 5
+
+    ## P-Value
+    #P<0.05
+
+    ## Interpretation of outcome
+    #Reject null hypotheses therefore the weights of the chicks is dependent on the feed
+
+chunk 2
+=======
+
+    ## Null Hypotheses
+    #H0: The contaminated water does not cause gastroenteritis
+
+    ## Alternative hypotheses
+    #H1: The contaminated water causes gastroenteritis 
+
+    #read data
+    gastroenteritis <- read_csv("gastroenteritis (1).csv")
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   Consumption = col_character(),
+    ##   Outcome = col_character()
+    ## )
+
+    # Tidy data using scatterplot
+    y <- xtabs(~Consumption + Outcome, data= gastroenteritis)
+    y
+
+    ##                     Outcome
+    ## Consumption          ill not ill
+    ##   < 1 glasses/day     39     121
+    ##   > 4 glasses/day    265     146
+    ##   1 to 4 glasses/day 265     258
+
+    # plotting the barplot
+    barplot(y, beside = TRUE, ylab = 'Consumption', xlab = 'Outcome', main = 'gastroenteritis', col= c ('blue', 'purple', 'yellow')) 
+    legend('top', c('<1 glasses/day', '>4 glasses/day', '1 to 4 glasses/day'), fill = c('blue', 'purple', 'yellow'))
+
+![](README_files/figure-markdown_strict/The%20Hote%20Zone-1.png)
+
+    # Statistical tests 
+    Z <- chisq.test(y, correct = TRUE)
+    Z
+
+    ## 
+    ##  Pearson's Chi-squared test
+    ## 
+    ## data:  y
+    ## X-squared = 74.925, df = 2, p-value < 2.2e-16
+
+    ## Test statistic and underlying assumptions
+    #analyses two categorical variables
+    #determines an association between two variables
+
+
+    # Degrees of freedom
+    DF= 2
+
+    ## P-Value
+    #p<0.05
+
+    ## Interpretation of outcome
+    #Reject NULL hypothese therefore the contaminated water causes gastroenteritis
+
+chunk 3
+=======
+
+    ## Null Hypotheses
+    #H0: Receiving a 5HT3-receptor blocker does not reduce nausea
+
+    ## Alternative hypotheses
+    #H1: Receiving a 5HT3-receptor blocker does reduce nausea
+
+    #read data
+    nausea <- read_csv("nausea (1).csv")
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   Patient = col_integer(),
+    ##   Nausea_before = col_integer(),
+    ##   Nausea_after = col_integer()
+    ## )
+
+    ## Tidy data
+    #The numeric rating scale is anchored at 0 (no nausea) to 6 (severe nausea) therefore remove row 9 (patient 8)
+
+    # Plot line graph
+
+    plot(nausea$Nausea_before~nausea$Patient, type = "l", ylim = c(0,6), xlab = "Patient", ylab = "Nausea numeric rating score", main = "The intensity of nausea before and after receiving a 5ht3-receptor blocker", col= "purple", lwd= 2)
+    lines(nausea$Nausea_after~nausea$Patient, col= "green", lwd= 2)
+    legend ("top", c("Nausea_before", "Nausea_after"),fill = c("purple", "green"))
+
+![](README_files/figure-markdown_strict/Nausea-1.png)
+
+    # Statistical test
+    wilcox.test(nausea$Nausea_before,nausea$Nausea_after, paired = TRUE)
+
+    ## Warning in wilcox.test.default(nausea$Nausea_before, nausea$Nausea_after, :
+    ## cannot compute exact p-value with ties
+
+    ## 
+    ##  Wilcoxon signed rank test with continuity correction
+    ## 
+    ## data:  nausea$Nausea_before and nausea$Nausea_after
+    ## V = 26, p-value = 0.04983
+    ## alternative hypothesis: true location shift is not equal to 0
+
+    ## Test statistic and underlying assumptions
+    #The analyses two variables which are paired and non-parametric within one population group in order to determine the association between them
+
+    ## p-value
+    #p<0.05
+
+    ## Interpretation of outcome
+    #Reject null hypotheses therefore receiving a 5HT3-receptor blocker reduces nausea
+
+Assignment 6
+------------
+
+chunk 1
+=======
+
+    ## Null Hypotheses
+    #H0: The Housing Prices does not depend on the interest rates
+
+    ## Alternative Hypotheses
+    #H1: The Housing Prices depend on the interest rates
+
+    #read data
+    library(readr)
+    housing <- read_csv("housing-prices.csv")
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   interest_rate = col_integer(),
+    ##   median_house_price_USD = col_integer()
+    ## )
+
+    # Tidy data 
+    interest= housing$interest_rate
+    house_price= housing$median_house_price_USD
+    head(cbind(interest, house_price))
+
+    ##      interest house_price
+    ## [1,]       10      183800
+    ## [2,]       10      183200
+    ## [3,]       10      174900
+    ## [4,]        9      173500
+    ## [5,]        8      172900
+    ## [6,]        7      173200
+
+    #plot scatterplot
+    plot(interest, house_price, xlab = "interest", ylab = "house_price")
+    abline(lm(housing$median_house_price_USD~housing$interest_rate, data=housing), col= "pink", lwd=2)
+
+![](README_files/figure-markdown_strict/Housing%20Prices-1.png)
+
+    ## Statistic test
+    # Linear Regression
+    housing1 <- lm(housing$median_house_price_USD~housing$interest_rate, data=housing)
+    summary(housing1)
+
+    ## 
+    ## Call:
+    ## lm(formula = housing$median_house_price_USD ~ housing$interest_rate, 
+    ##     data = housing)
+    ## 
+    ## Residuals:
+    ##    Min     1Q Median     3Q    Max 
+    ## -55865 -31631 -16406  27212  80735 
+    ## 
+    ## Coefficients:
+    ##                       Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)             399229      74427   5.364 9.99e-05 ***
+    ## housing$interest_rate   -24309       9205  -2.641   0.0194 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 43180 on 14 degrees of freedom
+    ## Multiple R-squared:  0.3325, Adjusted R-squared:  0.2848 
+    ## F-statistic: 6.974 on 1 and 14 DF,  p-value: 0.01937
+
+    ## Plotting diagnostic plots
+
+    # Diagnostic 1: Homoskedasticity
+    plot(x=housing1$fitted.values, housing1$residuals, main = "Homoskedasticity", col= "orange")
+    abline(h=0, col= "purple", lwd= 2)
+
+![](README_files/figure-markdown_strict/Housing%20Prices-2.png)
+
+    # Diagnostic 2: QQ plot
+    qqnorm(housing1$residuals)
+    qqline(housing1$residuals)
+
+![](README_files/figure-markdown_strict/Housing%20Prices-3.png)
+
+    # Binary outcome variable
+    glm(housing$median_house_price_USD~housing$interest_rate, data=housing)
+
+    ## 
+    ## Call:  glm(formula = housing$median_house_price_USD ~ housing$interest_rate, 
+    ##     data = housing)
+    ## 
+    ## Coefficients:
+    ##           (Intercept)  housing$interest_rate  
+    ##                399229                 -24309  
+    ## 
+    ## Degrees of Freedom: 15 Total (i.e. Null);  14 Residual
+    ## Null Deviance:       3.91e+10 
+    ## Residual Deviance: 2.61e+10  AIC: 390.8
+
+    ## Test statistic and underlying assumptions
+    #Scatter plot was done to determine the relationship between the two variables and the outliers 
+    #Linear regression diagnostics were used to determine whether there was a linear trend. #Additionally, diagnostics were also used to determine whether the residuals were normally distributed and if the residuals have the same variance for all the fitted values of y.
+
+
+    # Degrees of freedom
+    15
+
+    ## [1] 15
+
+    # P-value
+     p= 0.02
+     p<0.05
+
+    ## [1] TRUE
+
+    ## Interpretation of outcome
+    #The null hypotheses is thus rejected therefore the house prices depend on the interest rates.

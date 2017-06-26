@@ -70,7 +70,7 @@ altered_df <- df %>%
 #read data
 chicken <- read_csv("chick-weights.csv")
 
-# Tidy data using boxplot
+# plot boxplot
 boxplot(weight~feed, data= chicken)
 
 # Statistical tests 
@@ -214,8 +214,8 @@ glm(housing$median_house_price_USD~housing$interest_rate, data=housing)
  p= 0.02
  p<0.05
 
-# Interpretation of outcome
-The null hypotheses is thus rejected therefore the house prices depend on the interest rates. 
+## Interpretation of outcome
+#The null hypotheses is thus rejected therefore the house prices depend on the interest rates. 
 ```
 
 
